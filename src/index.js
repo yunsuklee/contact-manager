@@ -1,17 +1,41 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
+import PeopleList from './components/PlayersList';
+import AddPersonForm from './components/AddPlayersForm';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+const initialState = {
+  contacts: ["Lionel Messi", "Cristiano Ronaldo"]
+};
+
+// Reducer function
+function reducer(state = initialState, action) {
+  switch(action.type) {
+    case 'ADD_PLAYER':
+      return { ...state, 
+        contacts: [ ...state.contacts, action.data]};
+    case 'DELETE_PLAYER':
+      return { ...state,
+        contacts: [ ...state.contacts, action.data]};
+    default:
+      return state;
+  }
+}
+
+// Store to components
+const store = createStore(reducer);
+ReactDOM.render(
+  <Provider store={store}>
+    <AddPersonForm />
+    <PeopleList />
+  </Provider>,
+  document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+
+
+
+
